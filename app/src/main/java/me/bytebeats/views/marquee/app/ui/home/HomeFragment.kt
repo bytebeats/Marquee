@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import me.bytebeats.views.marquee.app.R
 import me.bytebeats.views.marquee.app.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -32,9 +30,21 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
-        })
+        }
+        binding.btnStart.setOnClickListener {
+            binding.marqueeTextView.startMarquee()
+        }
+        binding.btnResume.setOnClickListener {
+            binding.marqueeTextView.resumeMarquee()
+        }
+        binding.btnPause.setOnClickListener {
+            binding.marqueeTextView.pauseMarquee()
+        }
+        binding.btnStop.setOnClickListener {
+            binding.marqueeTextView.stopMarquee()
+        }
         return root
     }
 
