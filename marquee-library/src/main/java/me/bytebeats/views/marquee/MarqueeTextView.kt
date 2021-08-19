@@ -7,7 +7,7 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.view.animation.LinearInterpolator
 import android.widget.Scroller
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 
 /**
  * Created by bytebeats on 2021/8/19 : 15:45
@@ -18,7 +18,7 @@ class MarqueeTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleRes: Int = 0
-) : TextView(context, attrs, defStyleRes) {
+) : AppCompatTextView(context, attrs, defStyleRes) {
     var repeatMode: RepeatMode = RepeatMode.FOREVER
     var foreverMode: ForeverMode = ForeverMode.APPENDING
 
