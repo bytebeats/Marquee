@@ -3,4 +3,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="marquee_text_view_text" formatted="false" translatable="false">This is a MarqueeTextView, which can start, resume, pause and stop Marquee</string>
 </resources>
