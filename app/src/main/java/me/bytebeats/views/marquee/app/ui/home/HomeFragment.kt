@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import me.bytebeats.views.marquee.app.R
 import me.bytebeats.views.marquee.app.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -34,11 +35,17 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        binding.marqueeTextViewLong.setOnClickListener { Log.i(TAG, "click") }
-        binding.btnReset.setOnClickListener {
-//            binding.marqueeTextViewLong.reset()
-            binding.marqueeTextViewShort.reset()
+        var short = true
+        binding.marqueeTextViewShort.setOnClickListener {
+            short = !short
+            if (short) {
+                binding.marqueeTextViewShort.setText(R.string.marquee_text_view_text)
+            } else {
+                binding.marqueeTextViewShort.setText(R.string.marquee_text_view_text_short)
+            }
+            Log.i(TAG, "short: $short")
         }
+        binding.marqueeTextViewLong.setOnClickListener { Log.i(TAG, "click") }
         binding.btnResume.setOnClickListener {
 //            binding.marqueeTextViewLong.resumeMarquee()
             binding.marqueeTextViewShort.resumeMarquee()

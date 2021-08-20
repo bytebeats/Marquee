@@ -53,22 +53,13 @@
         app:repeat_mode="once"
         app:reset_x="true"
         app:short_stay_delay="2000"
-        app:tap_to_pause="true" />
+        app:tap_to_pause="false" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_reset"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_weight="1"
-            android:text="Reset"
-            android:textSize="15sp" />
 
         <Button
             android:id="@+id/btn_resume"

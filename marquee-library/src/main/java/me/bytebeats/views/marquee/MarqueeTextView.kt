@@ -62,7 +62,7 @@ class MarqueeTextView @JvmOverloads constructor(
         resetX = a.getBoolean(R.styleable.MarqueeTextView_reset_x, true)
         tapToPause = a.getBoolean(R.styleable.MarqueeTextView_tap_to_pause, false)
         a.recycle()
-        setOnClickListener {
+        super.setOnClickListener {
             if (tapToPause) {
                 tapToPause()
             } else {
@@ -77,16 +77,15 @@ class MarqueeTextView @JvmOverloads constructor(
         doAfterTextChanged {
             if (resetX) {
                 reset()
-                resumeMarquee()
             }
         }
     }
 
     private fun tapToPause() {
-        if (mState == State.RESUMED) {
-            pauseMarquee()
-        } else {
+        if (mState != State.RESUMED) {
             resumeMarquee()
+        } else if (mState != State.PAUSED) {
+            pauseMarquee()
         }
     }
 
@@ -94,7 +93,7 @@ class MarqueeTextView @JvmOverloads constructor(
         mClickListener = l
     }
 
-    fun reset() {
+    private fun reset() {
         mXPaused = 0
         m1stMarquee = true
         moveToState(State.INITIALIZED)
