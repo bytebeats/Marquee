@@ -1,6 +1,7 @@
 package me.bytebeats.views.marquee.app.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,21 +34,18 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        binding.btnStart.setOnClickListener {
-            binding.marqueeTextViewLong.startMarquee()
-            binding.marqueeTextViewShort.startMarquee()
+        binding.marqueeTextViewLong.setOnClickListener { Log.i(TAG, "click") }
+        binding.btnReset.setOnClickListener {
+//            binding.marqueeTextViewLong.reset()
+            binding.marqueeTextViewShort.reset()
         }
         binding.btnResume.setOnClickListener {
-            binding.marqueeTextViewLong.resumeMarquee()
-            binding.marqueeTextViewShort.startMarquee()
+//            binding.marqueeTextViewLong.resumeMarquee()
+            binding.marqueeTextViewShort.resumeMarquee()
         }
         binding.btnPause.setOnClickListener {
-            binding.marqueeTextViewLong.pauseMarquee()
-            binding.marqueeTextViewShort.startMarquee()
-        }
-        binding.btnStop.setOnClickListener {
-            binding.marqueeTextViewLong.stopMarquee()
-            binding.marqueeTextViewShort.startMarquee()
+//            binding.marqueeTextViewLong.pauseMarquee()
+            binding.marqueeTextViewShort.pauseMarquee()
         }
         return root
     }
@@ -55,5 +53,9 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "HomeFragment"
     }
 }

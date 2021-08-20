@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.Log
 import android.view.animation.LinearInterpolator
 import android.widget.Scroller
 import androidx.appcompat.widget.AppCompatTextView
@@ -30,22 +29,28 @@ class MarqueeTextView @JvmOverloads constructor(
         set(value) {
             field = if (value < 0) 0 else value
         }
-    var marqueeSpeed: Long = 1000//in milliseconds
-    var resetX: Boolean = true//reset x when text changed
+
+    //time which all text marquee once takes, in milliseconds
+    var marqueeSpeed: Long = 1000
+
+    //reset x when text changed
+    var resetX: Boolean = true
     var tapToPause: Boolean = false//tap to pause marquee, tap again to resume
 
     //text marquee finished, restart marquee after how much time, in milliseconds
-    var briefStayDelay: Long = 0
+    var shortStayDelay: Long = 0
         set(value) {
             field = if (value < 0) 0 else value
         }
 
     private var mClickListener: OnClickListener? = null
-    private var mIs1stMarquee = true
-    private var mPaused = true
+    private var m1stMarquee = true
     private val mScroller by lazy { Scroller(context, LinearInterpolator()) }
     private val sMainHandler by lazy { Handler(Looper.getMainLooper()) }
     private var mXPaused = 0
+    private var mState = State.INITIALIZED
+
+    var onStateChangeListener: OnStateChangeListener? = null
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.MarqueeTextView, 0, defStyleRes)
@@ -53,7 +58,7 @@ class MarqueeTextView @JvmOverloads constructor(
         foreverMode = ForeverMode.values()[a.getInt(R.styleable.MarqueeTextView_forever_mode, 0)]
         startDelay = a.getInteger(R.styleable.MarqueeTextView_start_delay, 0).toLong()
         marqueeSpeed = a.getInteger(R.styleable.MarqueeTextView_marquee_speed, 1000).toLong()
-        briefStayDelay = a.getInteger(R.styleable.MarqueeTextView_short_stay_delay, 0).toLong()
+        shortStayDelay = a.getInteger(R.styleable.MarqueeTextView_short_stay_delay, 0).toLong()
         resetX = a.getBoolean(R.styleable.MarqueeTextView_reset_x, true)
         tapToPause = a.getBoolean(R.styleable.MarqueeTextView_tap_to_pause, false)
         a.recycle()
@@ -71,13 +76,14 @@ class MarqueeTextView @JvmOverloads constructor(
         setScroller(mScroller)
         doAfterTextChanged {
             if (resetX) {
-                stopMarquee()
+                reset()
+                resumeMarquee()
             }
         }
     }
 
     private fun tapToPause() {
-        if (mPaused) {
+        if (mState == State.RESUMED) {
             pauseMarquee()
         } else {
             resumeMarquee()
@@ -85,29 +91,26 @@ class MarqueeTextView @JvmOverloads constructor(
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
-        super.setOnClickListener(l)
         mClickListener = l
     }
 
-    fun startMarquee() {
+    fun reset() {
         mXPaused = 0
-        mIs1stMarquee = true
-        mPaused = true
-        resumeMarquee()
+        m1stMarquee = true
+        moveToState(State.INITIALIZED)
+        mScroller.startScroll(0, 0, 0, 0, 0)
     }
 
-
     fun resumeMarquee() {
-        if (!mPaused) return
-        val distance = computeTextLength()
+        if (mState == State.RESUMED) return
+        val distance = computeDistance()
         if (distance <= 0) {
-            mPaused = true
-            mXPaused = 0
+            reset()
             return
         }
         val toScroll = distance - mXPaused
         val duration = (marqueeSpeed * toScroll * 1.0 / distance).toInt()
-        if (mIs1stMarquee) {
+        if (m1stMarquee) {
             sMainHandler.postDelayed({ startScroll(mXPaused, toScroll, duration) }, startDelay)
         } else {
             sMainHandler.post { startScroll(mXPaused, toScroll, duration) }
@@ -117,54 +120,74 @@ class MarqueeTextView @JvmOverloads constructor(
     private fun startScroll(xOffset: Int, distance: Int, duration: Int) {
         mScroller.startScroll(xOffset, 0, distance, 0, duration)
         invalidate()
-        mPaused = false
+        moveToState(State.RESUMED)
     }
 
     fun pauseMarquee() {
-        if (mPaused) return
-        mPaused = true
+        if (mState == State.PAUSED) return
         mXPaused = mScroller.currX
+        m1stMarquee = false
         mScroller.abortAnimation()
+        moveToState(State.PAUSED)
     }
 
-    fun stopMarquee() {
-        mPaused = true
-        mXPaused = 0
-        mScroller.startScroll(0, 0, 0, 0, 0)
-    }
-
-    private fun computeTextLength(): Int {
+    private fun computeDistance(): Int {
         val rect = Rect()
         paint.getTextBounds(text.toString(), 0, text.length, rect)
-        Log.i(
-            TAG,
-            "textBounds: ${rect.width()}, measureText: ${paint.measureText(text.toString())}"
-        )
         return rect.width()
     }
 
     override fun computeScroll() {
         super.computeScroll()
-        if (mScroller.isFinished && !mPaused) {
+        if (mScroller.isFinished && (mState == State.RESUMED || mState == State.AFTER_ONCE_FINISHED)) {
+            mXPaused = -width
             if (repeatMode == RepeatMode.ONCE) {
-                Log.i(TAG, "once")
-                stopMarquee()
+                if (mState == State.RESUMED) {
+                    doAfterOnceFinished()
+                } else if (mState == State.AFTER_ONCE_FINISHED) {
+                    m1stMarquee = false
+                    reset()
+                }
                 return
             }
-            mPaused = true
-            mXPaused = -width
-            mIs1stMarquee = false
-            Log.i(TAG, foreverMode.name)
+            m1stMarquee = false
+            moveToState(State.RESTARTED)
             if (foreverMode == ForeverMode.APPENDING) {
                 sMainHandler.post { resumeMarquee() }
             } else {
-                sMainHandler.postDelayed({ resumeMarquee() }, briefStayDelay)
+                sMainHandler.postDelayed({ resumeMarquee() }, shortStayDelay)
             }
         }
     }
 
+    private fun doAfterOnceFinished() {
+        val distance = computeDistance()
+        if (distance <= 0) {
+            reset()
+            return
+        }
+        val toScroll = 0 - mXPaused
+        val duration = (marqueeSpeed * toScroll * 1.0 / distance).toInt()
+        mScroller.startScroll(mXPaused, 0, toScroll, 0, duration)
+        invalidate()
+        moveToState(State.AFTER_ONCE_FINISHED)
+    }
+
+    private fun moveToState(newState: State) {
+        onStateChangeListener?.onChanged(mState, newState)
+        mState = newState
+    }
+
     enum class RepeatMode { FOREVER, ONCE }
     enum class ForeverMode { SHORT_STAY, APPENDING }
+
+    interface OnStateChangeListener {
+        fun onChanged(oldState: State, newState: State)
+    }
+
+    enum class State {
+        INITIALIZED, RESUMED, AFTER_ONCE_FINISHED, RESTARTED, PAUSED
+    }
 
     companion object {
         private const val TAG = "MarqueeTextView"
