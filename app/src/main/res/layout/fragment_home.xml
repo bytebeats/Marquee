@@ -62,12 +62,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_start"
+            android:id="@+id/btn_reset"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
-            android:text="Start"
+            android:text="Reset"
             android:textSize="15sp" />
 
         <Button
@@ -86,15 +86,6 @@
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:text="Pause"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/btn_stop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_weight="1"
-            android:text="Stop"
             android:textSize="15sp" />
 
     </LinearLayout>
