@@ -34,16 +34,20 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
         binding.btnStart.setOnClickListener {
-            binding.marqueeTextView.startMarquee()
+            binding.marqueeTextViewLong.startMarquee()
+            binding.marqueeTextViewShort.startMarquee()
         }
         binding.btnResume.setOnClickListener {
-            binding.marqueeTextView.resumeMarquee()
+            binding.marqueeTextViewLong.resumeMarquee()
+            binding.marqueeTextViewShort.startMarquee()
         }
         binding.btnPause.setOnClickListener {
-            binding.marqueeTextView.pauseMarquee()
+            binding.marqueeTextViewLong.pauseMarquee()
+            binding.marqueeTextViewShort.startMarquee()
         }
         binding.btnStop.setOnClickListener {
-            binding.marqueeTextView.stopMarquee()
+            binding.marqueeTextViewLong.stopMarquee()
+            binding.marqueeTextViewShort.startMarquee()
         }
         return root
     }

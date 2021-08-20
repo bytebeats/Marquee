@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <me.bytebeats.views.marquee.MarqueeTextView
-        android:id="@+id/marquee_text_view"
+        android:id="@+id/marquee_text_view_long"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -31,13 +31,30 @@
         android:text="@string/marquee_text_view_text"
         android:textAllCaps="true"
         android:textSize="25sp"
-        app:brief_stay_delay="2000"
         app:forever_mode="appending"
+        app:marquee_speed="5000"
         app:repeat_mode="forever"
-        app:marquee_speed="50"
         app:reset_x="true"
+        app:short_stay_delay="2000"
         app:start_delay="1000"
         app:tap_to_pause="true" />
+
+    <me.bytebeats.views.marquee.MarqueeTextView
+        android:id="@+id/marquee_text_view_short"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/marquee_text_view_text_short"
+        android:textAllCaps="true"
+        android:textSize="25sp"
+        app:forever_mode="appending"
+        app:marquee_speed="3000"
+        app:repeat_mode="once"
+        app:reset_x="true"
+        app:short_stay_delay="2000"
+        app:tap_to_pause="true" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
