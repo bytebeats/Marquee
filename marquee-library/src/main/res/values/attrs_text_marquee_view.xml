@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TextMarqueeView">
+        <attr name="marquee_direction" format="enum">
+            <enum name="startToEnd" value="0" />
+            <enum name="topToBottom" value="1" />
+            <enum name="endToStart" value="2" />
+            <enum name="bottomToTop" value="3" />
+        </attr>
+        <attr name="marquee_anim_duration" format="integer" />
+        <attr name="marquee_text_gravity" format="enum">
+            <enum name="start" value="0" />
+            <enum name="center" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+        <attr name="marquee_text_color" format="color|reference" />
+        <attr name="marquee_text_size" format="dimension|reference" />
+        <attr name="marquee_single_line" format="boolean" />
+        <attr name="marquee_text_font" format="reference" />
+    </declare-styleable>
+</resources>
