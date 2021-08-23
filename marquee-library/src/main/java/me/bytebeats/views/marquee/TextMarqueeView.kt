@@ -26,6 +26,10 @@ class TextMarqueeView @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : ViewFlipper(context, attrs) {
     var direction: Direction = Direction.StartToEnd
+        set(value) {
+            field = value
+            inAndOutAnimation()
+        }
     var animDuration: Long = 500
         set(value) {
             field = if (animDuration <= 0) 500 else value
@@ -70,7 +74,6 @@ class TextMarqueeView @JvmOverloads constructor(
         textGravity =
             TextGravity.values()[a.getInt(R.styleable.TextMarqueeView_marquee_text_gravity, 0)]
         textGravity()
-        inAndOutAnimation()
         a.recycle()
     }
 

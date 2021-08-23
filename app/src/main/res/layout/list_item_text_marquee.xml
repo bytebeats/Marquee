@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_item_text"
+<me.bytebeats.views.marquee.TextMarqueeView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_text_marquee"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="35dp"
     android:layout_gravity="center"
-    android:gravity="start|center_vertical">
-
-</TextView>
+    android:autoStart="false"
+    android:flipInterval="1000"
+    app:marquee_anim_duration="800"
+    app:marquee_direction="bottomToTop"
+    app:marquee_single_line="false"
+    app:marquee_text_color="#003399"
+    app:marquee_text_gravity="center"
+    app:marquee_text_size="20sp" />

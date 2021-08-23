@@ -19,4 +19,22 @@
         app:marquee_text_color="#009933"
         app:marquee_text_size="20sp" />
 
+    <me.bytebeats.views.marquee.TextMarqueeView
+        android:id="@+id/marquee_text_2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:autoStart="false"
+        android:flipInterval="3000"
+        app:marquee_anim_duration="500"
+        app:marquee_direction="bottomToTop"
+        app:marquee_single_line="false"
+        app:marquee_text_color="#009933"
+        app:marquee_text_size="20sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+
 </LinearLayout>
