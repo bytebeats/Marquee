@@ -1,4 +1,4 @@
-package me.bytebeats.views.marquee.app.ui.notifications
+package me.bytebeats.views.marquee.app.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -12,14 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import me.bytebeats.views.marquee.MarqueeView
 import me.bytebeats.views.marquee.app.R
-import me.bytebeats.views.marquee.app.databinding.FragmentNotificationsBinding
+import me.bytebeats.views.marquee.app.databinding.FragmentMarqueeViewBinding
+import me.bytebeats.views.marquee.app.vm.MarqueeViewModel
 
-class NotificationsFragment : Fragment() {
+class MarqueeViewFragment : Fragment() {
 
     private val adapter by lazy { MarqueeAdapter(requireContext()) }
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
-    private var _binding: FragmentNotificationsBinding? = null
+    private lateinit var marqueeViewModel: MarqueeViewModel
+    private var _binding: FragmentMarqueeViewBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -30,10 +31,10 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        marqueeViewModel =
+            ViewModelProvider(this).get(MarqueeViewModel::class.java)
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentMarqueeViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.marqueeView.adapter = adapter

@@ -2,7 +2,6 @@ package me.bytebeats.views.marquee
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -19,7 +18,7 @@ class MarqueeView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewFlipper(context, attrs), Observer {
-    var direction: Direction = Direction.StartToEnd
+    var direction: MarqueeDirection = MarqueeDirection.StartToEnd
         set(value) {
             field = value
             inAndOutAnimation()
@@ -35,7 +34,7 @@ class MarqueeView @JvmOverloads constructor(
     @AnimRes
     private var outAnim: Int = 0
 
-    var onItemClickListener: OnItemClickListener? = null
+    var onItemClickListener: OnItemClickListener<MarqueeView>? = null
     var adapter: Adapter<*>? = null
         set(value) {
             field = value
@@ -52,26 +51,26 @@ class MarqueeView @JvmOverloads constructor(
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.MarqueeView, 0, 0)
-        direction = Direction.values()[a.getInt(R.styleable.MarqueeView_marqueeDirection, 0)]
+        direction = MarqueeDirection.values()[a.getInt(R.styleable.MarqueeView_marqueeDirection, 0)]
         animDuration = a.getInt(R.styleable.MarqueeView_marqueeAnimDuration, 500).toLong()
         a.recycle()
     }
 
     private fun inAndOutAnimation() {
         when (direction) {
-            Direction.StartToEnd -> {
+            MarqueeDirection.StartToEnd -> {
                 inAnim = R.anim.marquee_in_from_start
                 outAnim = R.anim.marquee_out_to_end
             }
-            Direction.TopToBottom -> {
+            MarqueeDirection.TopToBottom -> {
                 inAnim = R.anim.marquee_in_from_top
                 outAnim = R.anim.marquee_out_to_bottom
             }
-            Direction.EndToStart -> {
+            MarqueeDirection.EndToStart -> {
                 inAnim = R.anim.marquee_in_from_end
                 outAnim = R.anim.marquee_out_to_start
             }
-            Direction.BottomToTop -> {
+            MarqueeDirection.BottomToTop -> {
                 inAnim = R.anim.marquee_in_from_bottom
                 outAnim = R.anim.marquee_out_to_top
             }
@@ -104,8 +103,7 @@ class MarqueeView @JvmOverloads constructor(
                 ++position
                 if (adapter != null) {
                     position %= adapter!!.itemCount()
-                    Log.i(TAG, "$position")
-                    val holder = createItemView(position)
+                    val holder = createItemView()
                     if (holder.view.parent == null) {
                         addView(holder.view)
                     }
@@ -130,7 +128,7 @@ class MarqueeView @JvmOverloads constructor(
         } else {
             position = 0
             if (adapter!!.itemCount() > 0) {
-                val holder = createItemView(position)
+                val holder = createItemView()
                 if (holder.view.parent == null) {
                     addView(holder.view)
                 }
@@ -140,7 +138,8 @@ class MarqueeView @JvmOverloads constructor(
         }
     }
 
-    private fun createItemView(position: Int): ViewHolder {
+    private fun createItemView(): ViewHolder {
+        val position = displayedChild + 1
         val p = position % 3
         if (mViewCache[p] == null) {
             mViewCache[p] = adapter!!.createViewHolder(p)
@@ -165,17 +164,6 @@ class MarqueeView @JvmOverloads constructor(
             inAnimation?.cancel()
             updateFlippers()
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(marqueeView: MarqueeView, view: View, position: Int)
-    }
-
-    enum class Direction {
-        StartToEnd,
-        TopToBottom,
-        EndToStart,
-        BottomToTop
     }
 
     abstract class Adapter<T : ViewHolder> : Observable() {

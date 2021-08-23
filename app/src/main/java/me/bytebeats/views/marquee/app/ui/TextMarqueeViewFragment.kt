@@ -1,4 +1,4 @@
-package me.bytebeats.views.marquee.app.ui.dashboard
+package me.bytebeats.views.marquee.app.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -10,15 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import me.bytebeats.views.marquee.MarqueeDirection
+import me.bytebeats.views.marquee.OnItemClickListener
 import me.bytebeats.views.marquee.TextMarqueeView
 import me.bytebeats.views.marquee.app.R
-import me.bytebeats.views.marquee.app.databinding.FragmentDashboardBinding
+import me.bytebeats.views.marquee.app.databinding.FragmentTextMarqueeViewBinding
+import me.bytebeats.views.marquee.app.vm.TextMarqueeViewModel
 import kotlin.math.min
 
-class DashboardFragment : Fragment() {
+class TextMarqueeViewFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
-    private var _binding: FragmentDashboardBinding? = null
+    private lateinit var textMarqueeViewModel: TextMarqueeViewModel
+    private var _binding: FragmentTextMarqueeViewBinding? = null
     private val _adapter by lazy { MarqueeTextAdapter(requireContext()) }
 
     // This property is only valid between onCreateView and
@@ -30,17 +33,13 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        textMarqueeViewModel =
+            ViewModelProvider(this).get(TextMarqueeViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentTextMarqueeViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.marqueeText.onItemClickListener = object : TextMarqueeView.OnItemClickListener {
-            override fun onItemClick(
-                textMarqueeView: TextMarqueeView,
-                itemView: View,
-                position: Int
-            ) {
+        binding.marqueeText.onItemClickListener = object : OnItemClickListener<TextMarqueeView> {
+            override fun onItemClick(view: TextMarqueeView, itemView: View, position: Int) {
                 Log.i(TAG, "position: $position")
             }
         }
@@ -105,9 +104,11 @@ class DashboardFragment : Fragment() {
         override fun getItemCount(): Int = messages.size / 2
 
         inner class MarqueeTextViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            val textMarqueeView = view.findViewById<TextMarqueeView>(R.id.list_item_text_marquee)
+            val textMarqueeView =
+                view.findViewById<TextMarqueeView>(R.id.list_item_text_marquee)
+
             fun bind(position: Int) {
-                textMarqueeView.direction = TextMarqueeView.Direction.values()[position % 4]
+                textMarqueeView.direction = MarqueeDirection.values()[position % 4]
                 textMarqueeView.startWithMessages(
                     messages.subList(
                         position * 2,
