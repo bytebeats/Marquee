@@ -1,4 +1,4 @@
-package me.bytebeats.views.marquee.app.ui.home
+package me.bytebeats.views.marquee.app.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +9,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import me.bytebeats.views.marquee.app.R
-import me.bytebeats.views.marquee.app.databinding.FragmentHomeBinding
+import me.bytebeats.views.marquee.app.databinding.FragmentMarqueeTextViewBinding
+import me.bytebeats.views.marquee.app.vm.MarqueeTextViewModel
 
-class HomeFragment : Fragment() {
+class MarqueeTextViewFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var marqueeTextViewModel: MarqueeTextViewModel
+    private var _binding: FragmentMarqueeTextViewBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,14 +26,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        marqueeTextViewModel =
+            ViewModelProvider(this).get(MarqueeTextViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentMarqueeTextViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        marqueeTextViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         var short = true
@@ -47,11 +48,11 @@ class HomeFragment : Fragment() {
         }
         binding.marqueeTextViewLong.setOnClickListener { Log.i(TAG, "click") }
         binding.btnResume.setOnClickListener {
-//            binding.marqueeTextViewLong.resumeMarquee()
+            binding.marqueeTextViewLong.resumeMarquee()
             binding.marqueeTextViewShort.resumeMarquee()
         }
         binding.btnPause.setOnClickListener {
-//            binding.marqueeTextViewLong.pauseMarquee()
+            binding.marqueeTextViewLong.pauseMarquee()
             binding.marqueeTextViewShort.pauseMarquee()
         }
         return root

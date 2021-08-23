@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="me.bytebeats.views.marquee.app.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="me.bytebeats.views.marquee.app.ui.MarqueeTextViewFragment"
+        android:label="@string/title_marquee_text_view"
+        tools:layout="@layout/fragment_marquee_text_view" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="me.bytebeats.views.marquee.app.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="me.bytebeats.views.marquee.app.ui.TextMarqueeViewFragment"
+        android:label="@string/title_text_marquee_view"
+        tools:layout="@layout/fragment_text_marquee_view" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="me.bytebeats.views.marquee.app.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="me.bytebeats.views.marquee.app.ui.MarqueeViewFragment"
+        android:label="@string/title_marquee_view"
+        tools:layout="@layout/fragment_marquee_view" />
 </navigation>

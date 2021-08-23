@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Marquee</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_marquee_text_view">MarqueeTextView</string>
+    <string name="title_text_marquee_view">TextMarqueeView</string>
+    <string name="title_marquee_view">MarqueeView</string>
     <string name="marquee_text_view_text" formatted="false" translatable="false">This is a MarqueeTextView, which can start, resume, pause and stop Marquee</string>
     <string name="marquee_text_view_text_short" formatted="false" translatable="false">This is a MarqueeTextView</string>
 </resources>

@@ -6,7 +6,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -25,7 +24,7 @@ class TextMarqueeView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewFlipper(context, attrs) {
-    var direction: Direction = Direction.StartToEnd
+    var direction: MarqueeDirection = MarqueeDirection.StartToEnd
         set(value) {
             field = value
             inAndOutAnimation()
@@ -51,7 +50,7 @@ class TextMarqueeView @JvmOverloads constructor(
     @AnimRes
     private var outAnim: Int = 0
 
-    var onItemClickListener: OnItemClickListener? = null
+    var onItemClickListener: OnItemClickListener<TextMarqueeView>? = null
 
     var position = 0
         private set
@@ -62,7 +61,8 @@ class TextMarqueeView @JvmOverloads constructor(
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.TextMarqueeView, 0, 0)
-        direction = Direction.values()[a.getInt(R.styleable.TextMarqueeView_marquee_direction, 0)]
+        direction =
+            MarqueeDirection.values()[a.getInt(R.styleable.TextMarqueeView_marquee_direction, 0)]
         animDuration = a.getInt(R.styleable.TextMarqueeView_marquee_anim_duration, 500).toLong()
         singleLine = a.getBoolean(R.styleable.TextMarqueeView_marquee_single_line, false)
         textSize = a.getDimensionPixelSize(R.styleable.TextMarqueeView_marquee_text_size, 14)
@@ -87,19 +87,19 @@ class TextMarqueeView @JvmOverloads constructor(
 
     private fun inAndOutAnimation() {
         when (direction) {
-            Direction.StartToEnd -> {
+            MarqueeDirection.StartToEnd -> {
                 inAnim = R.anim.marquee_in_from_start
                 outAnim = R.anim.marquee_out_to_end
             }
-            Direction.TopToBottom -> {
+            MarqueeDirection.TopToBottom -> {
                 inAnim = R.anim.marquee_in_from_top
                 outAnim = R.anim.marquee_out_to_bottom
             }
-            Direction.EndToStart -> {
+            MarqueeDirection.EndToStart -> {
                 inAnim = R.anim.marquee_in_from_end
                 outAnim = R.anim.marquee_out_to_start
             }
-            Direction.BottomToTop -> {
+            MarqueeDirection.BottomToTop -> {
                 inAnim = R.anim.marquee_in_from_bottom
                 outAnim = R.anim.marquee_out_to_top
             }
@@ -219,17 +219,6 @@ class TextMarqueeView @JvmOverloads constructor(
         itemView.text = message
         itemView.tag = position
         return itemView
-    }
-
-    enum class Direction {
-        StartToEnd,
-        TopToBottom,
-        EndToStart,
-        BottomToTop
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(textMarqueeView: TextMarqueeView, itemView: View, position: Int)
     }
 
     enum class TextGravity {

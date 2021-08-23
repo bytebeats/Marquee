@@ -1,10 +1,10 @@
-package me.bytebeats.views.marquee.app.ui.dashboard
+package me.bytebeats.views.marquee.app.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class TextMarqueeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"
