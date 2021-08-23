@@ -35,7 +35,7 @@ class DashboardFragment : Fragment() {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        _binding?.marqueeText?.onItemClickListener = object : TextMarqueeView.OnItemClickListener {
+        binding.marqueeText.onItemClickListener = object : TextMarqueeView.OnItemClickListener {
             override fun onItemClick(
                 textMarqueeView: TextMarqueeView,
                 itemView: View,
@@ -44,9 +44,9 @@ class DashboardFragment : Fragment() {
                 Log.i(TAG, "position: $position")
             }
         }
-        _binding?.marqueeText?.startWithMessage(TEXT)
-        _binding?.marqueeText2?.startWithMessage(TEXT)
-        _binding?.recyclerView?.let {
+        binding.marqueeText.startWithMessage(TEXT)
+        binding.marqueeText2.startWithMessage(TEXT)
+        binding.recyclerView.let {
             it.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             it.adapter = _adapter
@@ -56,15 +56,15 @@ class DashboardFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        _binding?.marqueeText?.startFlipping()
-        _binding?.marqueeText2?.startFlipping()
+        binding.marqueeText.startFlipping()
+        binding.marqueeText2.startFlipping()
         _adapter.update(TEXT.split("。").filter { it.isNotEmpty() })
     }
 
     override fun onPause() {
         super.onPause()
-        _binding?.marqueeText?.stopFlipping()
-        _binding?.marqueeText2?.stopFlipping()
+        binding.marqueeText.stopFlipping()
+        binding.marqueeText2.stopFlipping()
     }
 
     override fun onDestroyView() {

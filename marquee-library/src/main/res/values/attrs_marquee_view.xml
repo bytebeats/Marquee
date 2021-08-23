@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MarqueeView">
+        <attr name="marqueeDirection" format="enum">
+            <enum name="startToEnd" value="0" />
+            <enum name="topToBottom" value="1" />
+            <enum name="endToStart" value="2" />
+            <enum name="bottomToTop" value="3" />
+        </attr>
+        <attr name="marqueeAnimDuration" format="integer" />
+    </declare-styleable>
+</resources>
