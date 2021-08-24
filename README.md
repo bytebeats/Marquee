@@ -5,8 +5,7 @@ Marquee Views. 跑马灯效果View.
 
 NOTE: MarqueeTextView is a TextView, which extends AppCompatTextView, but TextMarqueeView is a MarqueeView, which supports text marquee only.
 
-###Effect/效果图
----
+### Effect/效果图
 
 <img src="/media/marquee.gif"/>
 
