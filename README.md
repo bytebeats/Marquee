@@ -7,7 +7,7 @@ NOTE: MarqueeTextView is a TextView, which extends AppCompatTextView, but TextMa
 
 ### Effect/效果图
 
-<img src="/media/marquee.gif"/>
+<img src="/media/marquee.gif" width="360" height="720"/>
 
 ### 属性
 MarqueeTextView属性
