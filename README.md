@@ -5,10 +5,10 @@ Marquee Views. 跑马灯效果View.
 
 NOTE: MarqueeTextView is a TextView, which extends AppCompatTextView, but TextMarqueeView is a MarqueeView, which supports text marquee only.
 
-#Effect/效果图
+###Effect/效果图
 ---
 
-<img src="/media/marquee_gif.webm"/>
+<img src="/media/marquee.gif"/>
 
 ### 属性
 MarqueeTextView属性
@@ -43,6 +43,8 @@ TextMarqueeView属性
 | marquee_text_font | text font/文字字体. |
 
 ###How to use/使用说明
+
+
 <br>MarqueeTextView
 ```
     <me.bytebeats.views.marquee.MarqueeTextView
@@ -236,6 +238,6 @@ TextMarqueeView属性
 
 Note: MarqueeView provides Adapter&ViewHolder to support marquee view groups.
 
-###To-Dos
+### To-Dos
 
-    ** publish marquee-library to mavenCentral.
+publish marquee-library to mavenCentral.
